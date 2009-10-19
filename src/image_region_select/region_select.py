@@ -87,8 +87,8 @@ class ImageRegionSelect(gtk.DrawingArea):
         self._selection_point_b = (0, 0)
         self._selection_dimensions = (50, 40)
         
-        self.load_image(filename)
-        self.load_pixbuf(pixbuf)
+        self._load_image(filename)
+        self._load_pixbuf(pixbuf)
         
     def do_get_property(self, property):
         if property.name == "filename":
@@ -98,9 +98,9 @@ class ImageRegionSelect(gtk.DrawingArea):
 
     def do_set_property(self, property, value):
         if property.name == "filename" and value != self._filename:
-            self.load_image(value)
+            self._load_image(value)
         elif property.name == "pixbuf":
-            self.load_pixbuf(value)
+            self._load_pixbuf(value)
         
     def _cb_expose_event(self, widget, event):
         context = widget.window.cairo_create()
@@ -185,7 +185,7 @@ class ImageRegionSelect(gtk.DrawingArea):
             context.set_source_rgb(*c)
             context.stroke()
             
-    def load_image(self, filename):
+    def _load_image(self, filename):
         if filename and os.path.exists(filename):
             self._filename = filename
             self._pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
@@ -195,7 +195,7 @@ class ImageRegionSelect(gtk.DrawingArea):
             
             self.set_size_request(width, height)
     
-    def load_pixbuf(self, pixbuf):
+    def _load_pixbuf(self, pixbuf):
         if pixbuf:
             self._pixbuf = pixbuf
             
