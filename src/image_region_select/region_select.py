@@ -61,6 +61,14 @@ class ImageRegionSelect(gtk.DrawingArea):
     
     __gsignals__ = {"selection-changed": (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))}
     
+    __gproperties__ = {"filename": (gobject.TYPE_STRING,
+                                    "image file path",
+                                    "Path to the image file.",
+                                    "", gobject.PARAM_READWRITE),
+                        "pixbuf": (gobject.TYPE_PYOBJECT, "pixbuf",
+                                    "The pixbuf holding the current image.",
+                                    gobject.PARAM_READWRITE)}
+    
     def __init__(self, filename="", pixbuf=None):
         gtk.DrawingArea.__init__(self)
         self._filename = filename
@@ -81,6 +89,18 @@ class ImageRegionSelect(gtk.DrawingArea):
         
         self.load_image(filename)
         self.load_pixbuf(pixbuf)
+        
+    def do_get_property(self, property):
+        if property.name == "filename":
+            return self._filename
+        elif property.name == "pixbuf":
+            return self._pixbuf
+
+    def do_set_property(self, property, value):
+        if property.name == "filename" and value != self._filename:
+            self.load_image(value)
+        elif property.name == "pixbuf":
+            self.load_pixbuf(value)
         
     def _cb_expose_event(self, widget, event):
         context = widget.window.cairo_create()
