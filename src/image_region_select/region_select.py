@@ -203,3 +203,16 @@ class ImageRegionSelect(gtk.DrawingArea):
             height = self._pixbuf.get_height()
             
             self.set_size_request(width, height)
+            
+    #getter and setter methods for gobject properties
+    def get_filename(self):
+        return self.get_property("filename")
+        
+    def set_filename(self, filename):
+        self.set_property("filename", filename)
+        
+    def get_pixbuf(self):
+        return self.get_property("pixbuf")
+        
+    def set_pixbuf(self, pixbuf):
+        self.set_property("pixbuf", pixbuf)
